@@ -27,8 +27,8 @@ public class SMimeServiceConnection {
      * Create new connection
      *
      * @param context
-     * @param providerPackageName specify package name of OpenPGP provider,
-     *                            e.g., "org.sufficientlysecure.keychain"
+     * @param providerPackageName specify package name of SMime provider,
+     *                            e.g., "de.fau.cs.mad"
      */
     public SMimeServiceConnection(Context context, String providerPackageName) {
         this.mApplicationContext = context.getApplicationContext();
@@ -39,8 +39,8 @@ public class SMimeServiceConnection {
      * Create new connection with callback
      *
      * @param context
-     * @param providerPackageName specify package name of OpenPGP provider,
-     *                            e.g., "org.sufficientlysecure.keychain"
+     * @param providerPackageName specify package name of SMime provider,
+     *                            e.g., "de.fau.cs.mad"
      * @param onBoundListener     callback, executed when connection to service has been established
      */
     public SMimeServiceConnection(Context context, String providerPackageName,

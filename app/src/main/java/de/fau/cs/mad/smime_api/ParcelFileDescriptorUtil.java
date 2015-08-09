@@ -86,21 +86,17 @@ public class ParcelFileDescriptorUtil {
                 }
                 mOut.flush(); // just to be safe
             } catch (IOException e) {
-                //Log.e(OpenPgpApi.TAG, "TransferThread" + getId() + ": writing failed", e);
             } finally {
                 try {
                     mIn.close();
                 } catch (IOException e) {
-                    //Log.e(OpenPgpApi.TAG, "TransferThread" + getId(), e);
                 }
                 try {
                     mOut.close();
                 } catch (IOException e) {
-                    //Log.e(OpenPgpApi.TAG, "TransferThread" + getId(), e);
                 }
             }
             if (mListener != null) {
-                //Log.d(OpenPgpApi.TAG, "TransferThread " + getId() + " finished!");
                 mListener.onThreadFinished(this);
             }
         }

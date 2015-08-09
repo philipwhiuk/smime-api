@@ -58,7 +58,7 @@ public class SMimeApi {
         this.mService = service;
     }
 
-    public interface IOpenPgpCallback {
+    public interface ISMimeCallback {
         void onReturn(final Intent result);
     }
 
@@ -66,9 +66,9 @@ public class SMimeApi {
         Intent data;
         InputStream is;
         OutputStream os;
-        IOpenPgpCallback callback;
+        ISMimeCallback callback;
 
-        private SMimeAsyncTask(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {
+        private SMimeAsyncTask(Intent data, InputStream is, OutputStream os, ISMimeCallback callback) {
             this.data = data;
             this.is = is;
             this.os = os;
@@ -87,7 +87,7 @@ public class SMimeApi {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void executeApiAsync(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {
+    public void executeApiAsync(Intent data, InputStream is, OutputStream os, ISMimeCallback callback) {
         SMimeAsyncTask task = new SMimeAsyncTask(data, is, os, callback);
 
         // don't serialize async tasks!
@@ -124,7 +124,7 @@ public class SMimeApi {
 
                             @Override
                             public void onThreadFinished(Thread thread) {
-                                //Log.d(OpenPgpApi.TAG, "Copy to service finished");
+                                //Log.d(SMimeApi.TAG, "Copy to service finished");
                             }
                         }
                 );
@@ -135,7 +135,7 @@ public class SMimeApi {
 
                             @Override
                             public void onThreadFinished(Thread thread) {
-                                //Log.d(OpenPgpApi.TAG, "Service finished writing!");
+                                //Log.d(SMimeApi.TAG, "Service finished writing!");
                             }
                         }
                 );
@@ -145,7 +145,7 @@ public class SMimeApi {
             result = mService.execute(data, input, output);
 
             // set class loader to current context to allow unparcelling
-            // of OpenPgpError and OpenPgpSignatureResult
+            // of SMimeError and SMimeSignatureResult
             // http://stackoverflow.com/a/3806769
             result.setExtrasClassLoader(mContext.getClassLoader());
 
