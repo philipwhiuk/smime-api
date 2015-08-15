@@ -31,6 +31,15 @@ public class SMimeApi {
     public static final String EXTRA_RESULT_ERROR = "de.fau.cs.mad.extra.ERROR";
     public static final String EXTRA_RESULT_CODE = "de.fau.cs.mad.extra.RESULT_COdE";
 
+    public static final Intent decryptAndVerifyMessage(final String senderAddress,
+                                                       final String recipientAddress) {
+        Intent intent = new Intent(ACTION_DECRYPT_VERIFY);
+        intent.putExtra(EXTRA_SENDER, senderAddress);
+        intent.putExtra(EXTRA_RECIPIENT, recipientAddress);
+
+        return intent;
+    }
+
     public static final Intent signMessage(String senderAddress, ParcelFileDescriptor input, ParcelFileDescriptor output) {
         Intent intent = new Intent(ACTION_SIGN);
         intent.putExtra(EXTRA_SENDER, senderAddress);
@@ -147,8 +156,8 @@ public class SMimeApi {
             // set class loader to current context to allow unparcelling
             // of SMimeError and SMimeSignatureResult
             // http://stackoverflow.com/a/3806769
-            result.setExtrasClassLoader(mContext.getClassLoader());
-
+            //result.setExtrasClassLoader(mContext.getClassLoader());
+            Log.d(SMimeApi.TAG, "service result: " + result);
             return result;
         } catch (Exception e) {
             Log.e(SMimeApi.TAG, "Exception in executeApi call", e);
