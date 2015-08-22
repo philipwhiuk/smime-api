@@ -31,6 +31,11 @@ public class SMimeApi {
     public static final String EXTRA_RESULT_ERROR = "de.fau.cs.mad.extra.ERROR";
     public static final String EXTRA_RESULT_CODE = "de.fau.cs.mad.extra.RESULT_CODE";
 
+    public static final String RESULT_TYPE = "de.fau.cs.mad.extra.RESULT_TYPE";
+    public static final int RESULT_TYPE_UNENCRYPTED_UNSIGNED = 0;
+    public static final int RESULT_TYPE_ENCRYPTED = 1;
+    public static final int RESULT_TYPE_SIGNED = 2;
+
     public static final Intent decryptAndVerifyMessage(final String senderAddress,
                                                        final String recipientAddress) {
         Intent intent = new Intent(ACTION_DECRYPT_VERIFY);
