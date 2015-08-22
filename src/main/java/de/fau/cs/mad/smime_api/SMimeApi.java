@@ -29,7 +29,7 @@ public class SMimeApi {
     public static final int RESULT_CODE_ERROR = 0;
     public static final int RESULT_CODE_SUCCESS = 1;
     public static final String EXTRA_RESULT_ERROR = "de.fau.cs.mad.extra.ERROR";
-    public static final String EXTRA_RESULT_CODE = "de.fau.cs.mad.extra.RESULT_COdE";
+    public static final String EXTRA_RESULT_CODE = "de.fau.cs.mad.extra.RESULT_CODE";
 
     public static final Intent decryptAndVerifyMessage(final String senderAddress,
                                                        final String recipientAddress) {
