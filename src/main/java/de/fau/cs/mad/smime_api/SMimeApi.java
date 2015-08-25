@@ -45,21 +45,17 @@ public class SMimeApi {
         return intent;
     }
 
-    public static final Intent signMessage(String senderAddress, ParcelFileDescriptor input, ParcelFileDescriptor output) {
+    public static final Intent signMessage(String senderAddress) {
         Intent intent = new Intent(ACTION_SIGN);
         intent.putExtra(EXTRA_SENDER, senderAddress);
-        intent.putExtra(EXTRA_INPUT, input);
-        intent.putExtra(EXTRA_OUTPUT, output);
 
         return intent;
     }
 
-    public static final Intent signAndEncryptMessage(String senderAddress, String recipientAddress, ParcelFileDescriptor input, ParcelFileDescriptor output) {
+    public static final Intent signAndEncryptMessage(String senderAddress, String recipientAddress) {
         Intent intent = new Intent(ACTION_ENCRYPT_AND_SIGN);
         intent.putExtra(EXTRA_SENDER, senderAddress);
         intent.putExtra(EXTRA_RECIPIENT, recipientAddress);
-        intent.putExtra(EXTRA_INPUT, input);
-        intent.putExtra(EXTRA_OUTPUT, output);
 
         return intent;
     }
