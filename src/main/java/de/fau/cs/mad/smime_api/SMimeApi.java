@@ -52,6 +52,13 @@ public class SMimeApi {
         return intent;
     }
 
+    public static final Intent encryptMessage(String recipientAddress) {
+        Intent intent = new Intent(ACTION_ENCRYPT);
+        intent.putExtra(EXTRA_RECIPIENT, recipientAddress);
+
+        return intent;
+    }
+
     public static final Intent signAndEncryptMessage(String senderAddress, String recipientAddress) {
         Intent intent = new Intent(ACTION_ENCRYPT_AND_SIGN);
         intent.putExtra(EXTRA_SENDER, senderAddress);
