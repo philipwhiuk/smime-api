@@ -36,6 +36,12 @@ public class SMimeApi {
     public static final int RESULT_TYPE_ENCRYPTED = 1;
     public static final int RESULT_TYPE_SIGNED = 2;
 
+    public static final String RESULT_SIGNATURE = "de.fau.cs.mad.extra.RESULT_SIGNATURE";
+    public static final int RESULT_SIGNATURE_UNSIGNED = 0;
+    public static final int RESULT_SIGNATURE_SIGNED = 1;
+    public static final int RESULT_SIGNATURE_SIGNED_UNCOFIRMED = 2;
+    public static final int RESULT_SIGNATURE_INVALID_EXPIRED = 3;
+
     public static final Intent decryptAndVerifyMessage(final String senderAddress,
                                                        final String recipientAddress) {
         Intent intent = new Intent(ACTION_DECRYPT_VERIFY);
