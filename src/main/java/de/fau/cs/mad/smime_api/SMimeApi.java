@@ -18,6 +18,7 @@ public class SMimeApi {
     public static final int API_VERSION = 1;
     public static final String ACTION_SIGN = "de.fau.cs.mad.action.SIGN";
     public static final String ACTION_ENCRYPT = "de.fau.cs.mad.action.ENCRYPT";
+    public static final String ACTION_VERIFY = "de.fau.cs.mad.action.VERIFY";
     public static final String ACTION_ENCRYPT_AND_SIGN = "de.fau.cs.mad.action.ENCRYPT_AND_SIGN";
     public static final String ACTION_DECRYPT_VERIFY = "de.fau.cs.mad.action.DECRYPT_VERIFY";
     public static final String EXTRA_INPUT = "de.fau.cs.mad.extra.EXTRA_INPUT";
@@ -41,6 +42,13 @@ public class SMimeApi {
     public static final int RESULT_SIGNATURE_SIGNED = 1;
     public static final int RESULT_SIGNATURE_SIGNED_UNCOFIRMED = 2;
     public static final int RESULT_SIGNATURE_INVALID_EXPIRED = 3;
+
+    public static Intent verifyMessage(final String senderAddress) {
+        Intent intent = new Intent(ACTION_VERIFY);
+        intent.putExtra(EXTRA_SENDER, senderAddress);
+
+        return intent;
+    }
 
     public static final Intent decryptAndVerifyMessage(final String senderAddress,
                                                        final String recipientAddress) {
