@@ -23,8 +23,8 @@ public class SMimeApi {
     public static final String ACTION_DECRYPT_VERIFY = "de.fau.cs.mad.action.DECRYPT_VERIFY";
     public static final String EXTRA_INPUT = "de.fau.cs.mad.extra.EXTRA_INPUT";
     public static final String EXTRA_OUTPUT = "de.fau.cs.mad.extra.EXTRA_OUTPUT";
-    public static final String EXTRA_SENDER = "de.fau.cs.mad.extra.EXTRA_SENDER";
-    public static final String EXTRA_RECIPIENT = "de.fau.cs.mad.extra.EXTRA_RECIPIENT";
+    public static final String EXTRA_IDENTITY = "de.fau.cs.mad.extra.EXTRA_IDENTITY";
+    public static final String EXTRA_OTHERPARTY = "de.fau.cs.mad.extra.EXTRA_OTHERPARTY";
     public static final String EXTRA_API_VERSION = "de.fau.cs.mad.extra.API_VERSION";
 
     public static final int RESULT_CODE_ERROR = 0;
@@ -45,7 +45,7 @@ public class SMimeApi {
 
     public static Intent verifyMessage(final String senderAddress) {
         Intent intent = new Intent(ACTION_VERIFY);
-        intent.putExtra(EXTRA_SENDER, senderAddress);
+        intent.putExtra(EXTRA_OTHERPARTY, senderAddress);
 
         return intent;
     }
@@ -53,30 +53,30 @@ public class SMimeApi {
     public static final Intent decryptAndVerifyMessage(final String senderAddress,
                                                        final String recipientAddress) {
         Intent intent = new Intent(ACTION_DECRYPT_VERIFY);
-        intent.putExtra(EXTRA_SENDER, senderAddress);
-        intent.putExtra(EXTRA_RECIPIENT, recipientAddress);
+        intent.putExtra(EXTRA_IDENTITY, recipientAddress);
+        intent.putExtra(EXTRA_OTHERPARTY, senderAddress);
 
         return intent;
     }
 
     public static final Intent signMessage(String senderAddress) {
         Intent intent = new Intent(ACTION_SIGN);
-        intent.putExtra(EXTRA_SENDER, senderAddress);
+        intent.putExtra(EXTRA_IDENTITY, senderAddress);
 
         return intent;
     }
 
     public static final Intent encryptMessage(String recipientAddress) {
         Intent intent = new Intent(ACTION_ENCRYPT);
-        intent.putExtra(EXTRA_RECIPIENT, recipientAddress);
+        intent.putExtra(EXTRA_OTHERPARTY, recipientAddress);
 
         return intent;
     }
 
     public static final Intent signAndEncryptMessage(String senderAddress, String recipientAddress) {
         Intent intent = new Intent(ACTION_ENCRYPT_AND_SIGN);
-        intent.putExtra(EXTRA_SENDER, senderAddress);
-        intent.putExtra(EXTRA_RECIPIENT, recipientAddress);
+        intent.putExtra(EXTRA_IDENTITY, senderAddress);
+        intent.putExtra(EXTRA_OTHERPARTY, recipientAddress);
 
         return intent;
     }
