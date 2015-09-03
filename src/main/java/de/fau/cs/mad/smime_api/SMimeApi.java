@@ -11,6 +11,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 public class SMimeApi {
     public static final String TAG = "SMIME API";
@@ -66,17 +67,17 @@ public class SMimeApi {
         return intent;
     }
 
-    public static final Intent encryptMessage(String recipientAddress) {
+    public static final Intent encryptMessage(List<String> recipientAddress) {
         Intent intent = new Intent(ACTION_ENCRYPT);
-        intent.putExtra(EXTRA_OTHERPARTY, recipientAddress);
+        intent.putExtra(EXTRA_OTHERPARTY, recipientAddress.toArray(new String[recipientAddress.size()]));
 
         return intent;
     }
 
-    public static final Intent signAndEncryptMessage(String senderAddress, String recipientAddress) {
+    public static final Intent signAndEncryptMessage(String senderAddress, List<String> recipientAddress) {
         Intent intent = new Intent(ACTION_ENCRYPT_AND_SIGN);
         intent.putExtra(EXTRA_IDENTITY, senderAddress);
-        intent.putExtra(EXTRA_OTHERPARTY, recipientAddress);
+        intent.putExtra(EXTRA_OTHERPARTY, recipientAddress.toArray(new String[recipientAddress.size()]));
 
         return intent;
     }
