@@ -11,6 +11,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.List;
 
 public class SMimeApi {
@@ -46,7 +47,7 @@ public class SMimeApi {
 
     public static Intent verifyMessage(final String senderAddress) {
         Intent intent = new Intent(ACTION_VERIFY);
-        intent.putExtra(EXTRA_OTHERPARTY, senderAddress);
+        intent.putExtra(EXTRA_OTHERPARTY, Collections.singletonList(senderAddress).toArray(new String[1]));
 
         return intent;
     }
@@ -55,7 +56,7 @@ public class SMimeApi {
                                                        final String recipientAddress) {
         Intent intent = new Intent(ACTION_DECRYPT_VERIFY);
         intent.putExtra(EXTRA_IDENTITY, recipientAddress);
-        intent.putExtra(EXTRA_OTHERPARTY, senderAddress);
+        intent.putExtra(EXTRA_OTHERPARTY, Collections.singletonList(senderAddress).toArray(new String[1]));
 
         return intent;
     }
