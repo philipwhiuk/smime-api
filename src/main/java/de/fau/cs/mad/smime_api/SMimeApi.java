@@ -28,6 +28,8 @@ public class SMimeApi {
     public static final String EXTRA_IDENTITY = "de.fau.cs.mad.extra.EXTRA_IDENTITY";
     public static final String EXTRA_OTHERPARTY = "de.fau.cs.mad.extra.EXTRA_OTHERPARTY";
     public static final String EXTRA_API_VERSION = "de.fau.cs.mad.extra.API_VERSION";
+    public static final String HAS_PRIVATE_KEY = "de.fau.cs.mad.action.HAS_PRIVATE_KEY";
+    public static final String HAS_PUBLIC_KEY = "de.fau.cs.mad.action.HAS_PUBLIC_KEY";
 
     public static final int RESULT_CODE_ERROR = 0;
     public static final int RESULT_CODE_SUCCESS = 1;
@@ -44,6 +46,18 @@ public class SMimeApi {
     public static final int RESULT_SIGNATURE_SIGNED = 1;
     public static final int RESULT_SIGNATURE_SIGNED_UNCOFIRMED = 2;
     public static final int RESULT_SIGNATURE_INVALID_EXPIRED = 3;
+
+    public static Intent hasPrivateKey(final String address) {
+        Intent intent = new Intent(HAS_PRIVATE_KEY);
+        intent.putExtra(EXTRA_IDENTITY, Collections.singletonList(address).toArray(new String[1]));
+        return intent;
+    }
+
+    public static Intent hasPublicKey(final String address) {
+        Intent intent = new Intent(HAS_PUBLIC_KEY);
+        intent.putExtra(EXTRA_IDENTITY, Collections.singletonList(address).toArray(new String[1]));
+        return intent;
+    }
 
     public static Intent verifyMessage(final String senderAddress) {
         Intent intent = new Intent(ACTION_VERIFY);
