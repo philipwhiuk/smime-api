@@ -1,4 +1,4 @@
-package de.fau.cs.mad.smime_api;
+package org.openintents.smime;
 
 
 import android.content.ComponentName;

@@ -1,4 +1,4 @@
-package de.fau.cs.mad.smime_api;
+package de.fau.cs.mad.smime;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

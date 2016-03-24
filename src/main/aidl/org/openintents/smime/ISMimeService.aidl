@@ -1,5 +1,5 @@
 // ISMimeService.aidl
-package de.fau.cs.mad.smime_api;
+package org.openintents.smime;
 
 // Declare any non-default types here with import statements
 

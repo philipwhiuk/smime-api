@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package de.fau.cs.mad.smime_api;
+package org.openintents.smime;
 
-import android.content.Intent;
 import android.os.ParcelFileDescriptor;
 
 import java.io.IOException;

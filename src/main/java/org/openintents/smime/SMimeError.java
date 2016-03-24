@@ -1,9 +1,7 @@
-package de.fau.cs.mad.smime_api;
+package org.openintents.smime;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 
 public class SMimeError implements Parcelable {
 

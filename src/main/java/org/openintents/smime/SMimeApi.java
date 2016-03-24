@@ -1,4 +1,4 @@
-package de.fau.cs.mad.smime_api;
+package org.openintents.smime;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -16,32 +16,32 @@ import java.util.List;
 
 public class SMimeApi {
     public static final String TAG = "SMIME API";
-    public static final String SERVICE_INTENT = "de.fau.cs.mad.ISMimeService";
+    public static final String SERVICE_INTENT = "org.openintents.smime.ISMimeService";
     public static final int API_VERSION = 1;
-    public static final String ACTION_SIGN = "de.fau.cs.mad.action.SIGN";
-    public static final String ACTION_ENCRYPT = "de.fau.cs.mad.action.ENCRYPT";
-    public static final String ACTION_VERIFY = "de.fau.cs.mad.action.VERIFY";
-    public static final String ACTION_ENCRYPT_AND_SIGN = "de.fau.cs.mad.action.ENCRYPT_AND_SIGN";
-    public static final String ACTION_DECRYPT_VERIFY = "de.fau.cs.mad.action.DECRYPT_VERIFY";
-    public static final String EXTRA_INPUT = "de.fau.cs.mad.extra.EXTRA_INPUT";
-    public static final String EXTRA_OUTPUT = "de.fau.cs.mad.extra.EXTRA_OUTPUT";
-    public static final String EXTRA_IDENTITY = "de.fau.cs.mad.extra.EXTRA_IDENTITY";
-    public static final String EXTRA_OTHERPARTY = "de.fau.cs.mad.extra.EXTRA_OTHERPARTY";
-    public static final String EXTRA_API_VERSION = "de.fau.cs.mad.extra.API_VERSION";
-    public static final String HAS_PRIVATE_KEY = "de.fau.cs.mad.action.HAS_PRIVATE_KEY";
-    public static final String HAS_PUBLIC_KEY = "de.fau.cs.mad.action.HAS_PUBLIC_KEY";
+    public static final String ACTION_SIGN = "org.openintents.smime.action.SIGN";
+    public static final String ACTION_ENCRYPT = "org.openintents.smime.action.ENCRYPT";
+    public static final String ACTION_VERIFY = "org.openintents.smime.action.VERIFY";
+    public static final String ACTION_ENCRYPT_AND_SIGN = "org.openintents.smime.action.ENCRYPT_AND_SIGN";
+    public static final String ACTION_DECRYPT_VERIFY = "org.openintents.smime.action.DECRYPT_VERIFY";
+    public static final String EXTRA_INPUT = "org.openintents.smime.extra.EXTRA_INPUT";
+    public static final String EXTRA_OUTPUT = "org.openintents.smime.extra.EXTRA_OUTPUT";
+    public static final String EXTRA_IDENTITY = "org.openintents.smime.extra.EXTRA_IDENTITY";
+    public static final String EXTRA_OTHERPARTY = "org.openintents.smime.extra.EXTRA_OTHERPARTY";
+    public static final String EXTRA_API_VERSION = "org.openintents.smime.extra.API_VERSION";
+    public static final String HAS_PRIVATE_KEY = "org.openintents.smime.action.HAS_PRIVATE_KEY";
+    public static final String HAS_PUBLIC_KEY = "org.openintents.smime.action.HAS_PUBLIC_KEY";
 
     public static final int RESULT_CODE_ERROR = 0;
     public static final int RESULT_CODE_SUCCESS = 1;
-    public static final String EXTRA_RESULT_ERROR = "de.fau.cs.mad.extra.ERROR";
-    public static final String EXTRA_RESULT_CODE = "de.fau.cs.mad.extra.RESULT_CODE";
+    public static final String EXTRA_RESULT_ERROR = "org.openintents.smime.extra.ERROR";
+    public static final String EXTRA_RESULT_CODE = "org.openintents.smime.extra.RESULT_CODE";
 
-    public static final String RESULT_TYPE = "de.fau.cs.mad.extra.RESULT_TYPE";
+    public static final String RESULT_TYPE = "org.openintents.smime.extra.RESULT_TYPE";
     public static final int RESULT_TYPE_UNENCRYPTED_UNSIGNED = 0;
     public static final int RESULT_TYPE_ENCRYPTED = 1;
     public static final int RESULT_TYPE_SIGNED = 2;
 
-    public static final String RESULT_SIGNATURE = "de.fau.cs.mad.extra.RESULT_SIGNATURE";
+    public static final String RESULT_SIGNATURE = "org.openintents.smime.extra.RESULT_SIGNATURE";
     public static final int RESULT_SIGNATURE_UNSIGNED = 0;
     public static final int RESULT_SIGNATURE_SIGNED = 1;
     public static final int RESULT_SIGNATURE_SIGNED_UNCOFIRMED = 2;
