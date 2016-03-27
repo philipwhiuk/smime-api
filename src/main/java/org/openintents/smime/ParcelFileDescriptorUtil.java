@@ -32,7 +32,7 @@ public class ParcelFileDescriptorUtil {
         void onThreadFinished(final Thread thread);
     }
 
-    public static ParcelFileDescriptor pipeFrom(InputStream inputStream, IThreadListener listener)
+    public static ParcelFileDescriptor pipeFrom(InputStream inputStream)
             throws IOException {
         ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
         ParcelFileDescriptor readSide = pipe[0];
@@ -40,43 +40,39 @@ public class ParcelFileDescriptorUtil {
 
 
         // start the transfer thread
-        new TransferThread(inputStream, new ParcelFileDescriptor.AutoCloseOutputStream(writeSide),
-                listener)
-                .start();
+        TransferThread t = new TransferThread(inputStream, new ParcelFileDescriptor.AutoCloseOutputStream(writeSide));
+        t.start();
 
         return readSide;
     }
 
-    public static ParcelFileDescriptor pipeTo(OutputStream outputStream, IThreadListener listener)
+    public static TransferThread pipeTo(OutputStream outputStream, ParcelFileDescriptor output)
             throws IOException {
         ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
         ParcelFileDescriptor readSide = pipe[0];
         ParcelFileDescriptor writeSide = pipe[1];
 
         // start the transfer thread
-        new TransferThread(new ParcelFileDescriptor.AutoCloseInputStream(readSide), outputStream,
-                listener)
-                .start();
+        TransferThread t = new TransferThread(new ParcelFileDescriptor.AutoCloseInputStream(output), outputStream);
+        t.start();
 
-        return writeSide;
+        return t;
     }
 
     static class TransferThread extends Thread {
         final InputStream mIn;
         final OutputStream mOut;
-        final IThreadListener mListener;
 
-        TransferThread(InputStream in, OutputStream out, IThreadListener listener) {
+        TransferThread(InputStream in, OutputStream out) {
             super("ParcelFileDescriptor Transfer Thread");
             mIn = in;
             mOut = out;
-            mListener = listener;
             setDaemon(true);
         }
 
         @Override
         public void run() {
-            byte[] buf = new byte[1024];
+            byte[] buf = new byte[4096];
             int len;
 
             try {
@@ -94,9 +90,6 @@ public class ParcelFileDescriptorUtil {
                     mOut.close();
                 } catch (IOException e) {
                 }
-            }
-            if (mListener != null) {
-                mListener.onThreadFinished(this);
             }
         }
     }

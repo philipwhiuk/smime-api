@@ -13,16 +13,23 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SMimeApi {
     public static final String TAG = "SMIME API";
     public static final String SERVICE_INTENT = "org.openintents.smime.ISMimeService";
     public static final int API_VERSION = 1;
+    public static final String ACTION_CHECK_PERMISSION = "org.openintents.smime.action.CHECK_PERMISSION";
+    public static final String ACTION_CLEARTEXT_SIGN = "org.openintents.smime.action.CLEARTEXT_SIGN";
     public static final String ACTION_SIGN = "org.openintents.smime.action.SIGN";
     public static final String ACTION_ENCRYPT = "org.openintents.smime.action.ENCRYPT";
     public static final String ACTION_VERIFY = "org.openintents.smime.action.VERIFY";
     public static final String ACTION_ENCRYPT_AND_SIGN = "org.openintents.smime.action.ENCRYPT_AND_SIGN";
     public static final String ACTION_DECRYPT_VERIFY = "org.openintents.smime.action.DECRYPT_VERIFY";
+    public static final String ACTION_DECRYPT_METADATA = "org.openintents.smime.action.DECRYPT_METADATA";
+    public static final String ACTION_GET_SIGN_CERTIFICATE_ID = "org.openintents.smime.action.GET_SIGN_CERTIFICATE_ID";
+    public static final String ACTION_GET_CERTIFICATE_IDS = "org.openintents.smime.action.GET_CERTIFICATE_IDS";
+    public static final String ACTION_GET_CERTIFICATE = "org.openintents.smime.action.GET_CERTIFICATE";
     public static final String EXTRA_INPUT = "org.openintents.smime.extra.EXTRA_INPUT";
     public static final String EXTRA_OUTPUT = "org.openintents.smime.extra.EXTRA_OUTPUT";
     public static final String EXTRA_IDENTITY = "org.openintents.smime.extra.EXTRA_IDENTITY";
@@ -31,10 +38,17 @@ public class SMimeApi {
     public static final String HAS_PRIVATE_KEY = "org.openintents.smime.action.HAS_PRIVATE_KEY";
     public static final String HAS_PUBLIC_KEY = "org.openintents.smime.action.HAS_PUBLIC_KEY";
 
+    public static final String RESULT_CODE = "result_code";
     public static final int RESULT_CODE_ERROR = 0;
     public static final int RESULT_CODE_SUCCESS = 1;
+    public static final int RESULT_CODE_USER_INTERACTION_REQUIRED = 2;
+
+    public static final String RESULT_ERROR = "error";
+    public static final String RESULT_INTENT = "intent";
+
     public static final String EXTRA_RESULT_ERROR = "org.openintents.smime.extra.ERROR";
     public static final String EXTRA_RESULT_CODE = "org.openintents.smime.extra.RESULT_CODE";
+    public static final String EXTRA_CERTIFICATE_ID = "certificate_id";
 
     public static final String RESULT_TYPE = "org.openintents.smime.extra.RESULT_TYPE";
     public static final int RESULT_TYPE_UNENCRYPTED_UNSIGNED = 0;
@@ -99,6 +113,7 @@ public class SMimeApi {
 
     ISMimeService mService;
     Context mContext;
+    final AtomicInteger mPipeIdGen = new AtomicInteger();
 
     public SMimeApi(Context context, ISMimeService service) {
         this.mContext = context;
@@ -146,16 +161,42 @@ public class SMimeApi {
         }
     }
 
+
+    public Intent executeApi(Intent data, InputStream is, OutputStream os) {
+        ParcelFileDescriptor input = null;
+        try {
+            if (is != null) {
+                input = ParcelFileDescriptorUtil.pipeFrom(is);
+            }
+
+            return executeApi(data, input, os);
+        } catch (Exception e) {
+            Log.e(SMimeApi.TAG, "Exception in executeApi call", e);
+            Intent result = new Intent();
+            result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
+            result.putExtra(RESULT_ERROR,
+                    new SMimeError(SMimeError.CLIENT_SIDE_ERROR, e.getMessage()));
+            return result;
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    Log.e(SMimeApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
+                }
+            }
+        }
+    }
+
     /**
      * InputStream and OutputStreams are always closed after operating on them!
      *
      * @param data
-     * @param is
+     * @param input
      * @param os
      * @return
      */
-    public Intent executeApi(Intent data, InputStream is, OutputStream os) {
-        ParcelFileDescriptor input = null;
+    public Intent executeApi(Intent data, ParcelFileDescriptor input, OutputStream os) {
         ParcelFileDescriptor output = null;
 
         try {
@@ -164,32 +205,17 @@ public class SMimeApi {
 
             Intent result;
 
-            // pipe the input and output
-            if (is != null) {
-                input = ParcelFileDescriptorUtil.pipeFrom(is,
-                        new ParcelFileDescriptorUtil.IThreadListener() {
+            Thread pumpThread =null;
+            int outputPipeId = 0;
 
-                            @Override
-                            public void onThreadFinished(Thread thread) {
-                                //Log.d(SMimeApi.TAG, "Copy to service finished");
-                            }
-                        }
-                );
-            }
             if (os != null) {
-                output = ParcelFileDescriptorUtil.pipeTo(os,
-                        new ParcelFileDescriptorUtil.IThreadListener() {
-
-                            @Override
-                            public void onThreadFinished(Thread thread) {
-                                //Log.d(SMimeApi.TAG, "Service finished writing!");
-                            }
-                        }
-                );
+                outputPipeId = mPipeIdGen.incrementAndGet();
+                output = mService.createOutputPipe(outputPipeId);
+                pumpThread = ParcelFileDescriptorUtil.pipeTo(os, output);
             }
 
             // blocks until result is ready
-            result = mService.execute(data, input, output);
+            result = mService.execute(data, input, outputPipeId);
 
             // set class loader to current context to allow unparcelling
             // of SMimeError and SMimeSignatureResult

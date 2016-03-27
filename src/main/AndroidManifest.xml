@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.fau.cs.mad.smime_api">
+    package="org.openintents.smime">
 
     <application />
 
