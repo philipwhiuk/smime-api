@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.openintents.smime;
+package org.openintents.smime.util;
 
 import android.os.ParcelFileDescriptor;
 

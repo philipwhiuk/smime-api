@@ -1,4 +1,4 @@
-package org.openintents.smime;
+package org.openintents.smime.util;
 
 import android.os.Parcel;
 import android.os.Parcelable;

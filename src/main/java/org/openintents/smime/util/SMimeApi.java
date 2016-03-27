@@ -1,4 +1,4 @@
-package org.openintents.smime;
+package org.openintents.smime.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+
+import org.openintents.smime.ISMimeService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,6 +62,8 @@ public class SMimeApi {
     public static final int RESULT_SIGNATURE_SIGNED = 1;
     public static final int RESULT_SIGNATURE_SIGNED_UNCOFIRMED = 2;
     public static final int RESULT_SIGNATURE_INVALID_EXPIRED = 3;
+    public static final String EXTRA_CALL_UUID1 = ""; //TODO
+    public static final String EXTRA_CALL_UUID2 = ""; //TODO
 
     public static Intent hasPrivateKey(final String address) {
         Intent intent = new Intent(HAS_PRIVATE_KEY);

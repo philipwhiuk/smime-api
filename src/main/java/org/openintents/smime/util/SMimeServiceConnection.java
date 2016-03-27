@@ -1,4 +1,4 @@
-package org.openintents.smime;
+package org.openintents.smime.util;
 
 
 import android.content.ComponentName;
@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+
+import org.openintents.smime.ISMimeService;
 
 public class SMimeServiceConnection {
 
