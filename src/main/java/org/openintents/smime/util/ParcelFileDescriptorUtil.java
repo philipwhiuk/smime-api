@@ -18,10 +18,13 @@
 package org.openintents.smime.util;
 
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import org.openintents.smime.util.SMimeApi.SMimeDataSource;
 
 /**
  * Partially based on <a href="http://stackoverflow.com/questions/18212152/">Stackoverflow: Transfer InputStream to another Service (across process boundaries)</a>
@@ -89,6 +92,42 @@ public class ParcelFileDescriptorUtil {
                 try {
                     mOut.close();
                 } catch (IOException e) {
+                }
+            }
+        }
+    }
+
+    public static ParcelFileDescriptor asyncPipeFromDataSource(SMimeDataSource dataSource) throws IOException {
+        ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
+        ParcelFileDescriptor readSide = pipe[0];
+        ParcelFileDescriptor writeSide = pipe[1];
+
+        new DataSourceTransferThread(dataSource, new ParcelFileDescriptor.AutoCloseOutputStream(writeSide)).start();
+
+        return readSide;
+    }
+
+    static class DataSourceTransferThread extends Thread {
+        final SMimeDataSource dataSource;
+        final OutputStream outputStream;
+
+        DataSourceTransferThread(SMimeDataSource dataSource, OutputStream outputStream) {
+            super("IPC Transfer Thread");
+            this.dataSource = dataSource;
+            this.outputStream = outputStream;
+            setDaemon(true);
+        }
+
+        @Override
+        public void run() {
+            try {
+                dataSource.writeTo(outputStream);
+            } catch (IOException e) {
+                Log.e(SMimeApi.TAG, "IOException when writing to out", e);
+            } finally {
+                try {
+                    outputStream.close();
+                } catch (IOException ignored) {
                 }
             }
         }
